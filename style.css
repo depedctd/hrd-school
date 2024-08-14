@@ -3,6 +3,7 @@ body{
     margin: 0px;
     font-family: Poppins;
     text-align: center;
+    margin-top: 0px;
 }
 
 h1 {
@@ -36,5 +37,26 @@ a:hover{
     color: #444444;
     padding-top: 2px;
     padding-bottom: 15px;
+}
 
+.imge{
+    height: 60px;
+    padding-left: 7px;
+    padding-right: 7px;
+    margin-top: 30px;
+}
+
+.home{
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    /*display: flex;*/
+    font-family: Poppins;
+    background-color: #BEC6A0;
+    gap: 1rem;
+
+}
+
+li {
+    list-style-type: none;
 }

@@ -23,36 +23,14 @@
 
     <style>
 
-        table, th, td {
-            border: 4px solid #F5F5F7;
-            border-collapse: collapse;
-        }
-    
-        th,td {
-            color: whitesmoke;
-            background-color: #F5F5F7;
-            border-radius: 10px;
-            padding: 6px;
-        }
-    
-        td{
-            text-align: left;   
-        }
-    
-        table {
-            margin-left: auto;
-            margin-right: auto;
-            width: 70%;
-        }
-
         .pela{
             font-size: 30px;
         }
 
         hr{
             display: block;
-            margin-top: 0.5em;
-            margin-bottom: 0.5em;
+            margin-top: 1em;
+            margin-bottom: 1em;
             margin-left: 20%;
             margin-right: 20%;
             border-style: outset;
@@ -62,6 +40,7 @@
         a{
         color: whitesmoke;
         background-color: #606676;
+        border-radius: 10px;
         text-decoration-style: solid;
         padding-left: 5px;
         padding-right: 5px;
@@ -74,6 +53,19 @@
             padding-right: 5px;
         }
 
+       .container{
+            display: inline-flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .eval{
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+    
        
         </style>
 
@@ -83,17 +75,51 @@
         <img class=imge src="./images/DepEd.png">
         <img class=imge src="./images/Catanduanes.png">
         <h1>Active Links for English Language Assistance (ELA) Training-Workshop</h1>
-    </section>
-    <section>
-        <hr>
-        <a class="pela" href="https://forms.office.com/Pages/ResponsePage.aspx?id=gKvjQCQgo0W_dnoHYaJNKbLhNXGJFixAmtPRXpFb98RUNjlGSk4wMVpZNkFUV1Q5V0hKSjVPMUsyNS4u" target="_blank">Profile of Participants</a><br>
-        <img class="qrcode" src="./images/qrcode-profile.png">
         <hr>
     </section>
+
     <section>
-        <a class="pela" href="https://forms.office.com/r/CZzBbQy02B" target="_blank">Day 1 Evaluation</a>
-        <img class="qrcode" src="./images/qrcode-profile.png">
+        <div class="container">
+            <div class="eval">
+                <a class="pela" href="https://forms.office.com/Pages/ResponsePage.aspx?id=gKvjQCQgo0W_dnoHYaJNKbLhNXGJFixAmtPRXpFb98RUNjlGSk4wMVpZNkFUV1Q5V0hKSjVPMUsyNS4u" target="_blank">Profile of Participants</a>
+                <img class="qrcode" src="./images/qrcode-profile.png">
+            </div>
+        </div>
+        <hr>   
     </section>
+
+    <section>
+        <div class="container">
+            <div class="eval">
+                <a class="pela" href="https://forms.office.com/r/FE3z78RxHT" target="_blank">Pre-Test</a>
+                <img class="qrcode" src="./images/pre-test.png">
+            </div>
+            <div class="eval">
+                <a class="pela" href="https://forms.office.com/r/CHNbqCTYk5" target="_blank">Post-Test</a>
+                <img class="qrcode" src="./images/pre-test.png">
+            </div>
+        </div>  
+        <hr> 
+    </section>
+
+
+    <section>
+        <div class="container">
+            <div class="eval">
+                <a class="pela" href="https://forms.office.com/r/CZzBbQy02B" target="_blank">Day 1 Evaluation</a>
+                <img class="qrcode" src="./images/eod-day1.png">
+            </div>
+            <div class="eval">
+                <a class="pela" href="https://forms.office.com/r/CHNbqCTYk5" target="_blank">Day 2 Evaluation</a>
+                <img class="qrcode" src="./images/eod-day2.png">
+            </div>
+        </div>  
+        <hr> 
+    </section>
+
+
+
+
 
    
     

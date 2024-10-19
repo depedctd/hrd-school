@@ -53,10 +53,9 @@ a:hover{
 }
 
 .qrcode{
-    height: 500px;
+    height: 400px;
     padding-left: 7px;
     padding-right: 7px;
-    margin-top: 1px;
 }
 
 .home{

@@ -161,3 +161,24 @@ hr{
     margin: 0px;
     font-size: large;
 }
+
+.body3{
+    font-size: 16px;
+    padding: 0px;
+    margin-left: 30px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+
+.photocontainer{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.inphotos {
+    width: 500px;
+    height: auto;
+    border-radius: 15px;
+}

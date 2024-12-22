@@ -34,8 +34,9 @@ h1 {
 
 .prep{
     list-style-type: number;
-    line-height: 2;
+    line-height: 2.5;
     text-align: left;
+    font-size: large;
 }
 
 .formal{
@@ -53,7 +54,7 @@ h1 {
     padding-bottom: 10px;
     background-color: #FECB89;
     border-radius: 10px;;
-    flex-basis: 300px;
+    flex-basis: 900px;
 }
 
 
@@ -80,10 +81,16 @@ a:hover{
 }
 
 ul {
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
+    
 }
 
+.cpd-reminders{
+    text-align: left;
+    list-style-type: square;
+    padding-left: 60px;
+}
 
 
 .imge{
@@ -181,4 +188,8 @@ hr{
     width: 500px;
     height: auto;
     border-radius: 15px;
+}
+
+.element{
+    width: 90px;
 }

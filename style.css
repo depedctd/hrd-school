@@ -204,3 +204,22 @@ hr{
     margin: 0px;
     font-size: medium;
 }
+
+.fixed-menu{
+    display: flex;
+    position: fixed;
+    top: 0px;
+    gap: 4px;
+    justify-content: center;
+    flex-wrap: wrap;
+    }
+
+.memo{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+}

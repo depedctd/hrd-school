@@ -161,10 +161,6 @@ footer, p{
     margin: 0px;
 }
 
-.catand{
-    padding-top: 20px;
-}
-
 table, th, td {
     border: 1px solid #373640;
     border-collapse: collapse;
@@ -279,9 +275,9 @@ hr{
     background-color: #387478;
     color: #F8FAFC;
     display: flex;
-    justify-content: center;
+    justify-content: left;
     align-items: center;
-    gap: 15px;
+    gap: 5px;
     flex-basis: auto;
     flex-wrap: wrap;
     padding: 15px;
@@ -349,6 +345,9 @@ hr{
     color: #FEFEFA;
     height: auto;
     width: 100%;
-    padding-bottom: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 40px;
+    text-align: left;
 }
 

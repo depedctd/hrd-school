@@ -1,5 +1,5 @@
 body{
-    background-color: #F5F5F7;
+    background-color: #FEFEFA;
     margin: 0px;
     font-family: Poppins;
     text-align: center;
@@ -15,7 +15,6 @@ body{
     padding: 0px;
     font-size: large;
 }
-
 
 
 h1 {
@@ -77,7 +76,7 @@ h2{
 }
 
 
-a{
+/* a{
     color: #FECB89;
     text-decoration: none;
     background-color: #373640;
@@ -90,8 +89,29 @@ a:hover{
     background-color: #FECB89;
     padding: 10px;
     border-radius: 10px;
+} */
+
+a{
+    background-color: #387478;
+    color: #F8FAFC;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+    font-family: Poppins;
+    text-decoration: none;
 }
 
+a:hover{
+    background-color: #88d8c0;
+    color: black;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+    font-family: Poppins;
+    text-decoration: none;
+}
 
 .submenu{
     list-style-type: none;
@@ -186,8 +206,8 @@ hr{
     padding: 0px;
     margin-top: 0px;
     margin-bottom: 0px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: 10px;
+    margin-right: 5px;
     font-size: large;
 }
 
@@ -254,3 +274,81 @@ hr{
 .apped{
     text-align: left;
 }
+
+.container-navi{
+    background-color: #387478;
+    color: #F8FAFC;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-basis: auto;
+    flex-wrap: wrap;
+    padding: 15px;
+    width: auto;
+}
+
+.container-navi a:hover{
+    background-color: #88d8c0;
+    color: black;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-family: Poppins;
+    text-decoration: none;
+    border-radius: 0px;
+}
+
+.head{
+    padding-top: 50px;
+}
+
+.logo{
+    display: flex;
+    justify-content: left;
+    margin-left: 10px;
+  }
+
+.imge1{
+    height: 40px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.office{
+    color: #387478;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
+    justify-content: left;
+    align-items: left;
+    font-family: Platypi;
+}
+
+.header{
+    position: fixed;
+    background-color: #FEFEFA;
+    width: 100%;
+}
+
+.objc{
+    margin-top: 0px;;
+}
+
+.dummy{
+    height: 100px;
+    width: auto;
+    background-color: #FEFEFA;
+}
+
+.footbed{
+    background-color: #387478;
+    color: #FEFEFA;
+    height: auto;
+    width: 100%;
+    padding-bottom: 10px;
+}
+

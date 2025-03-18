@@ -44,7 +44,8 @@ h2{
     padding-left: 10px;
     padding-right: 10px;
     padding-bottom: 10px;
-    background-color: #A2C579;
+    background-color: #387478;
+    color: #FEFEFA;
     border-radius: 10px;;
     flex-basis: 300px;
 }
@@ -281,7 +282,7 @@ hr{
     flex-basis: auto;
     flex-wrap: wrap;
     padding: 15px;
-    width: auto;
+    width: 100%;
 }
 
 .container-navi a:hover{

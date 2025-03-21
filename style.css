@@ -364,6 +364,12 @@ hr{
     font-family: Platypi;
 }
 
+.sgod{
+    margin: 0px;
+    padding-bottom: 0px;
+    text-align: left;
+}
+
 .header{
     position: fixed;
     background-color: #FEFEFA;
@@ -375,7 +381,7 @@ hr{
 }
 
 .dummy{
-    height: 120px;
+    height: 60px;
     width: auto;
     background-color: #FEFEFA;
 }

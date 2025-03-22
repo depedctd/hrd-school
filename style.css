@@ -24,7 +24,7 @@ h1 {
     color: #EC625F;
 }
 
-h2{
+h2{ 
     padding: 0px;
     margin: 0px;
 }
@@ -382,6 +382,12 @@ hr{
 
 .dummy{
     height: 60px;
+    width: auto;
+    background-color: #FEFEFA;
+}
+
+.dummy2{
+    height: 150px;
     width: auto;
     background-color: #FEFEFA;
 }

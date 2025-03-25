@@ -24,11 +24,20 @@ h1 {
     color: #EC625F;
 }
 
-h2{ 
+h2 { 
     padding: 0px;
     margin: 0px;
 }
 
+h4{
+    padding: 0px;
+    margin: 0px;
+
+}
+
+.note{
+    font-size: medium;
+}
 
 .container{ 
     display: flex;
@@ -130,20 +139,25 @@ h2{
     text-decoration: none;
  }
 
-/* a{
-    color: #FECB89;
+ .note a{
+    background-color: #FEFEFA;
+    color: #1e90ff;
     text-decoration: none;
-    background-color: #373640;
-    padding: 10px;
-    border-radius: 10px;
-}
+    padding: 0px;
+    border-radius: 0px;
+ }
 
-a:hover{
-    color: #373640;
-    background-color: #FECB89;
-    padding: 10px;
+ .note a:hover{
+    background-color: #FEFEFA;
+    color: #387478;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
     border-radius: 10px;
-} */
+    font-family: Poppins;
+    text-decoration: none;
+ }
 
 a{
     background-color: #387478;

@@ -257,6 +257,12 @@ table {
     width: 50%;
 }
 
+.tabpolicies{
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+}
+
 .tdcenter{
     text-align: center;
 }
@@ -450,6 +456,43 @@ hr{
     height: 150px;
     width: auto;
     background-color: #FEFEFA;
+}
+
+.container-speaker{
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 0.7fr 1fr;
+    justify-items: left;
+    align-items: center;
+    justify-self: center;
+    gap: 15px;
+    text-align: left;
+    width: 40%;
+    
+}
+
+.speaker{
+    height: 200px;
+    width: 200px;
+    border-radius: 100px;
+}
+
+.name-speaker{
+    font-size: larger;
+    padding: 0px;
+    margin: 0px;
+    color: #387478;
+}
+
+.session-speaker{
+    font-size: larger;
+    padding: 0px;
+    margin: 0px;
+    color: black;
+}
+
+.item-speaker{
+    justify-content: center;
 }
 
 .footbed{

@@ -578,6 +578,14 @@ hr{
     color: #fefefa;
 }
 
+.No-Submission{
+    color: red;
+}
+
+.Submitted{
+    color: green;
+}
+
 .footbed{
     background-color: #387478;
     color: #FEFEFA;

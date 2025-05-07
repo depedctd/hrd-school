@@ -586,6 +586,11 @@ hr{
     color: green;
 }
 
+.calendar{
+    width: 80%;
+    
+}
+
 .footbed{
     background-color: #387478;
     color: #FEFEFA;

@@ -159,6 +159,26 @@ h4{
     text-decoration: none;
  }
 
+ .inset a{
+    background-color: #FEFEFA;
+    color: #1e90ff;
+    text-decoration: none;
+    padding: 0px;
+    border-radius: 0px;
+ }
+
+ .inset a:hover{
+    background-color: #FEFEFA;
+    color: #387478;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0px;
+    padding-right: 0px;
+    border-radius: 10px;
+    font-family: Poppins;
+    text-decoration: none;
+ }
+
 a{
     background-color: #387478;
     color: #F8FAFC;
@@ -590,6 +610,14 @@ hr{
     width: 80%;
     
 }
+
+.table-inset {
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
+    
+}
+
 
 .footbed{
     background-color: #387478;

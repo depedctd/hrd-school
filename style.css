@@ -638,6 +638,13 @@ hr{
     
 }
 
+.site{
+    display: flex;
+    justify-content: right;
+    margin-right: 10px;
+    font-size: small;
+}
+
 
 .footbed{
     background-color: #387478;

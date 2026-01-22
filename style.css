@@ -277,6 +277,16 @@ table {
     width: 50%;
 }
 
+.tabpax-2{
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+}
+
+.indent1{
+    text-indent: 20%;
+}
+
 .table-masterclass{
     margin-left: auto;
     margin-right: auto;

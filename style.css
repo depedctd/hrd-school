@@ -39,6 +39,28 @@ h4{
     font-size: medium;
 }
 
+.container-district{
+    Height: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left: 40px;
+    margin-right: 40px;
+    display: flex;
+    gap: 15px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: left;
+    align-items: left;
+    background-color: #387478;
+    color: #FEFEFA;
+    border-radius: 10px;
+    padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    
+}
+
 .container{ 
     display: flex;
     gap: 10px;;
@@ -662,8 +684,8 @@ hr{
     width: 100%;
     padding-top: 20px;
     padding-bottom: 20px;
-    padding-left: 40px;
-    text-align: left;
+    padding-left: 20px;
+    text-align: center;
 }
 
 

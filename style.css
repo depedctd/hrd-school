@@ -235,6 +235,19 @@ ul {
     
 }
 
+.list-1{
+    text-align: left;
+    margin-right: 100px;
+    margin-left: 100px;
+    font-size: large;
+}
+
+.list-2{
+    text-align: left;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
 .cpd-reminders{
     text-align: left;
     list-style-type: square;
@@ -374,6 +387,16 @@ hr{
     margin-left: 10px;
     margin-right: 5px;
     font-size: large;
+}
+
+.target-4{
+    padding: 0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 80px;
+    margin-right: 80px;
+    font-size: large;
+    text-align: left;
 }
 
 .body3{
@@ -518,7 +541,7 @@ hr{
 }
 
 .dummy{
-    height: 60px;
+    height: 80px;
     width: auto;
     background-color: #FEFEFA;
 }

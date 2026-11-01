@@ -1,0 +1,418 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Catanduanes School Directory</title>
+<style>
+  body{font:14px Arial,sans-serif;margin:24px;color:#222}
+  h1{margin-bottom:8px}
+  #search{padding:9px;width:min(380px,90%);margin:8px 0}
+  .wrap{overflow:auto;max-height:75vh;border:1px solid #ccc}
+  table{border-collapse:collapse;width:100%;min-width:900px}
+  th,td{border:1px solid #ddd;padding:8px;text-align:left}
+  thead th{position:sticky;top:0;background:#f1f4f8;z-index:1}
+  thead tr.filters th{top:38px;background:#fafafa}
+  th button{border:0;background:none;font-weight:bold;font-size:14px;cursor:pointer;padding:0}
+  th input{box-sizing:border-box;width:100%;padding:6px}
+  tbody tr:nth-child(even){background:#f8f9fa}
+  #status{margin:8px 0;color:#555}
+</style>
+</head>
+<body>
+<h1>SDO Catanduanes School Directory</h1>
+
+<div class="school-summary">
+  <div><strong>No. of Elementary Schools </strong><span>214</span></div>
+  <div><strong>No. of Secondary Schools </strong><span>34</span></div>
+  <div><strong>No. of Integrated Schools </strong><span>20</span></div>
+  <div><strong>No. of Schools </strong><span>268</span></div>
+</div>
+
+<input id="search" type="search" placeholder="Search all columns…">
+<button id="clear" type="button">Clear filters</button>
+
+<div id="status"></div>
+<div class="wrap">
+<table>
+  <thead>
+    <tr id="head"></tr>
+    <tr id="filters" class="filters"></tr>
+  </thead>
+  <tbody id="body"></tbody>
+</table>
+</div>
+
+<script>
+/*
+  Data format per line:
+  No. | District | School Name | School ID | District Supervisor/School Head | Level
+  (Rows are included as tab-separated text so the data stays easy to edit.)
+*/
+const raw = `No.|District|School Name|School ID|School Head|Level
+1|Bagamanoc North|Bugao CES|113154|Minnie I. Lopez|Elementary
+2|Bagamanoc North|Cahan ES|113155|Jenle Evangelista|Elementary
+3|Bagamanoc North|Hinipaan ES|113156|Jose Tapia|Elementary
+4|Bagamanoc North|Mavil ES|113157|Rebecca Villacorta|Elementary
+5|Bagamanoc North|Sagrada ES|113158|Jerry Velchez|Elementary
+6|Bagamanoc North|San Vicente ES|113159|Cherry San Jose|Elementary
+7|Bagamanoc South|Bacak ES|113160|Lolita Dela Rosa|Elementary
+8|Bagamanoc South|Bagamanoc CES|113161|Francia Tebelin|Elementary
+9|Bagamanoc South|Pangcayanan ES|113162|Romeo Ogalinola|Elementary
+10|Bagamanoc South|Quigaray ES|113163|Reynalyn Sunguad|Elementary
+11|Bagamanoc South|Salvacion ES|113164|Leny Ignacio|Elementary
+12|Bagamanoc South|San Rafael ES|174001|Cynthia Evangelista|Elementary
+13|Bagamanoc South|Suchan IS|113165; 503187|Julie Vitalicio|Elementary
+14|Baras North|Agban CES|113166|Juan Geromo|Elementary
+15|Baras North|Benticayan ES|113167|Janet Vargas|Elementary
+16|Baras North|Genitligan ES|113168|Rodel Tayo|Elementary
+17|Baras North|Guinsaanan ES|113169|Joel Masagca|Elementary
+18|Baras North|Puraran ES|113170|Lilybeth Gualberto|Elementary
+19|Baras North|San Miguel ES|113171|Ara Bodota|Elementary
+20|Baras South|Abihao ES|113172|Maribel Tagoo|Elementary
+21|Baras South|Baras CES|113173|Adeleine Arcilla|Elementary
+22|Baras South|Caragumihan ES|113174|Digna Tesorero|Elementary
+23|Baras South|Macutal ES|113175|Dakila Pinacate|Elementary
+24|Baras South|Moning ES|113176|Cathelyn Arcilla|Elementary
+25|Baras South|Paniquihan ES|113177|Lalaine Gonzales|Elementary
+26|Baras South|Putsan-Danao ES|113178|Jan Marvin Toledana|Elementary
+27|Baras South|Salvacion ES|113179|Nicanor Buendia|Elementary
+28|Baras South|Sta. Maria ES|174002|Levi Taway|Elementary
+29|Baras South|Tilod ES|113180|Jovel Tendencia|Elementary
+30|Bato East|Bagumbayan ES|174003|Marshall Tito|Elementary
+31|Bato East|Batalay ES|113181|Estrella Rojas Jra.|Elementary
+32|Bato East|Bato CES|113182|Timmy Alcantara|Elementary
+33|Bato East|Bote IS|500412|Jenylin Taopo|Elementary
+34|Bato East|Buenavista ES|113184|Rolyn Trinidad|Elementary
+35|Bato East|Cagraray ES|113185|Salvador Flores|Elementary
+36|Bato East|Carorian ES|113186|Robert Obillo|Elementary
+37|Bato East|Libjo ES|113187|Rocelia Trinidad|Elementary
+38|Bato East|Mintay ES|113188|Ronaldo Rodulfo|Elementary
+39|Bato East|Pananaogan ES|174016|Agnes Doblon|Elementary
+40|Bato East|San Pedro ES|113189|Sherwyne Manlangit|Elementary
+41|Bato East|San Roque ES|113190|Virginia Tejerero|Elementary
+42|Bato West|Cabugao IS|500032|Maybelle Rubio|Elementary
+43|Bato West|Guinobatan ES|113192|Bert Timbal|Elementary
+44|Bato West|Marinawa ES|174004|Lilibeth Tabuzo|Elementary
+45|Bato West|Oguis ES|113193|Angelito Paragas|Elementary
+46|Bato West|Sibacungan ES|113194|Roy Tejerero|Elementary
+47|Bato West|Sipi ES|113195|Jenry Tayam|Elementary
+48|Caramoran North|Buenavista ES|113196|Allan Sapanta|Elementary
+49|Caramoran North|Camburo ES|113197|Leny Salazar|Elementary
+50|Caramoran North|Caramoran CES|113198|Irma Miraran|Elementary
+51|Caramoran North|Dariao ES|113199|Mary Anne Galicia|Elementary
+52|Caramoran North|Mabini IS|113200; 503186|Edgar Santos|Elementary
+53|Caramoran North|Palumbanes IS|500414|Roldan Reazon|Elementary
+54|Caramoran North|Panique IS|113202; 503185|Jil Ann Salazar|Elementary
+55|Caramoran North|San Jose ES|113203|Joven Onan|Elementary
+56|Caramoran North|Tubli ES|113204|Analily Idanan|Elementary
+57|Caramoran North|Tucao-Maysuram IS|502809|Ma. Magdalena Yutan|Elementary
+58|Caramoran South|Bocon ES|113206|Edwin Resare|Elementary
+59|Caramoran South|Datag CES|113217|Irene Aguilar|Elementary
+60|Caramoran South|Guiamlong ES|113207|Hizel Del Barrio|Elementary
+61|Caramoran South|Hitoma-Bulalacao ES|113208|Maricon Bernal|Elementary
+62|Caramoran South|Inalmasinan ES|113209|Herald Surbano|Elementary
+63|Caramoran South|Iyao ES|113210|Aldin Magdahong|Elementary
+64|Caramoran South|Maui ES|113211|Ramir Del Barrio|Elementary
+65|Caramoran South|Milaviga IS|500415|Jouie Sanchez|Elementary
+66|Caramoran South|Obi ES|113213|Marichris Eusebio|Elementary
+67|Caramoran South|Sabloyon ES|113214|Alan Gud|Elementary
+68|Caramoran South|Salvacion ES|113215|Lorie Banta|Elementary
+69|Caramoran South|Supang ES|113216|Daniel Solsona|Elementary
+70|Gigmoto|Biong ES|113218|Chito Carranza|Elementary
+71|Gigmoto|Dominador C. Guerrero ES|174010|Denmar Romero|Elementary
+72|Gigmoto|Dororian ES|113219|Wilson Olino|Elementary
+73|Gigmoto|Gigmoto Central ES|113220|Marino Pantaleon|Elementary
+74|Gigmoto|San Pedro ES|113221|Juan Tatad|Elementary
+75|Gigmoto|Sicmil IS|500033|Denmar Romero|Elementary
+76|Gigmoto|Sioron ES|113223|Fredilyn Soner|Elementary
+77|Pandan East|Baldoc IS|502496|Percy Rima|Elementary
+78|Pandan East|Canlubi ES|113225|Willy Icaro, Jr.|Elementary
+79|Pandan East|Hiyop ES|113226|Arnel De Quiros|Elementary
+80|Pandan East|Jose O. Vera ES|113227|John Bryan Arcilla|Elementary
+81|Pandan East|Lourdes ES|113228|Arnel Bonifacio|Elementary
+82|Pandan East|Marambong ES|113229|Mary Jane Rima|Elementary
+83|Pandan East|Porot ES|113230|Bernardo Condeno, Jr.|Elementary
+84|Pandan East|San Isidro IS|502937|Jennierose Rodriguez|Elementary
+85|Pandan East|Tabugoc ES|113232|Arnulfo Bernardino|Elementary
+86|Pandan West|Bagawang ES|113233|Marivic Buizon|Elementary
+87|Pandan West|Balognonan ES|113234|Laina Lopez|Elementary
+88|Pandan West|Caruyo PS|174009|Ramil Antonio|Elementary
+89|Pandan West|Catamban ES|113235|Lorena Emerenciana|Elementary
+90|Pandan West|Cobo IS|500159|Arlene Obico|Elementary
+91|Pandan West|Lumabao ES|113237|Ian Lopez|Elementary
+92|Pandan West|Oga ES|113238|Rebecca Lopez|Elementary
+93|Pandan West|Pandan CES|113239|Amalia Domingo|Elementary
+94|Pandan West|Panuto ES|113240|Maria Reena Serrano|Elementary
+95|Pandan West|San Andres ES|113241|Joel Datoon|Elementary
+96|Pandan West|San Rafael PS|174014|Jeson Lopez|Elementary
+97|Pandan West|Sta. Cruz ES|113242|Tito Fernandez|Elementary
+98|Pandan West|Tariwara ES|113243|Joven Onan|Elementary
+99|Panganiban|Alinawan IS|113244; 503184|Arnel Fernandez|Elementary
+100|Panganiban|Babaguan ES|113245|Felipe Tuldac, Jr.|Elementary
+101|Panganiban|Bayhan Community School|113246|Beatriz Arisapa|Elementary
+102|Panganiban|Burabod Community School|113247|Cherilyn Turado|Elementary
+103|Panganiban|Cabuyoan ES|113248|Linda Dela Rosa|Elementary
+104|Panganiban|Cagdarao ES|113249|Rene Tuldac|Elementary
+105|Panganiban|Mabini ES|113250|Corazon Magtangob|Elementary
+106|Panganiban|Maculiw ES|113251|Liza Robles|Elementary
+107|Panganiban|Panay Community School|113252|Romeo Alberto|Elementary
+108|Panganiban|Panganiban CES|113253|Josepine Vallespin|Elementary
+109|Panganiban|San Miguel ES|113254|Walter Turado|Elementary
+110|Panganiban|Tibo ES|113255|Romeo Alberto|Elementary
+111|San Andres East|Alibuag ES|113256|Wenceslao Zafe|Elementary
+112|San Andres East|Batong Paloway ES|113257|Rolando Regalado|Elementary
+113|San Andres East|Bon-ot ES|113258|Evelyn Garcia|Elementary
+114|San Andres East|Caragnag ES|113259|Rogelio Sontillano|Elementary
+115|San Andres East|Comagaycay ES|113260|Cecile Alvea|Elementary
+116|San Andres East|Jose Rizal ES|113261|Danilo Climaco, Jr.|Elementary
+117|San Andres East|Lictin IS|500160|Dennis Gianan|Elementary
+118|San Andres East|Palawig ES|113263|Reggie Cerdenia|Elementary
+119|San Andres East|San Andres CES|113264|Francis Surban|Elementary
+120|San Andres East|San Jose ES|113265|Wilson Santelices|Elementary
+121|San Andres East|Timbaan ES|113266|Edwina Camacho|Elementary
+122|San Andres East|Yocti ES|113267|Rolly Nazareno|Elementary
+123|San Andres West|Agojo ES|113268|Joue Bongon|Elementary
+124|San Andres West|Bagong Sirang ES|113269|Marietta Bongon|Elementary
+125|San Andres West|Barihay ES|113270|Vernie Postrado|Elementary
+126|San Andres West|Bislig ES|113271|Manuel Tablizo|Elementary
+127|San Andres West|Cabcab CES|113272|Soledad Gianan|Elementary
+128|San Andres West|Cabungahan ES|113273|Raquel Bañas|Elementary
+129|San Andres West|Catagbacan ES|113274|Job Jr. Samudio|Elementary
+130|San Andres West|Codon ES|113275|Robert Tablate|Elementary
+131|San Andres West|Datag ES|113276|Gina Zuniega|Elementary
+132|San Andres West|Hilawan ES|174005|Raquel Pajenago|Elementary
+133|San Andres West|JMA Asgad ES|113277|Lilibeth Manlangit|Elementary
+134|San Andres West|Manambrag ES|113278|Ronald Coronejo|Elementary
+135|San Andres West|Mayngaway ES|113279|Napoleon Arcilla III|Elementary
+136|San Andres West|Puting Baybay ES|113280|Vanessa Lyn Coronejo|Elementary
+137|San Andres West|San Isidro ES|113281|Glywys Ain Baluyot|Elementary
+138|San Andres West|San Vicente ES|113282|Alfredo Abejo Jr.|Elementary
+139|San Andres West|Tibang ES|113283|Joni Tolledo|Elementary
+140|San Andres West|Tominawog ES|113284|Prince Lee Burce|Elementary
+141|San Miguel North|Alma ES|113285|Jingkee Torreña|Elementary
+142|San Miguel North|Balatohan ES|113286|Ma. Krishna Ramos|Elementary
+143|San Miguel North|Caglatawan ES|113287|Princess Kaye Torrente|Elementary
+144|San Miguel North|JMA Tucao ES|113298|Ana Alcayaga|Elementary
+145|San Miguel North|Kilikilihan ES|113289|Alex Torres|Elementary
+146|San Miguel North|Mabato CES|113290|Marigen Torrente|Elementary
+147|San Miguel North|Pacogon ES|113291|Eddie Cadag|Elementary
+148|San Miguel North|Pagsangahan IS|502056|Milani Del Barrio|Elementary
+149|San Miguel North|Paraiso A ES|113293|Marilyn Soriao|Elementary
+150|San Miguel North|Paraiso B ES|113294|Alex Aguilar|Elementary
+151|San Miguel North|San Marcos ES|113295|Janet Tapar|Elementary
+152|San Miguel North|Siay ES|113296|Vanessa Polero|Elementary
+153|San Miguel North|Tobrehon ES|113297|Hondina Tatad|Elementary
+154|San Miguel South|Boton PS|174015|Cynthia Sorra|Elementary
+155|San Miguel South|Buhi ES|113299|Rowena Tindugan|Elementary
+156|San Miguel South|Dayawa ES|113300|Christophere Tapas|Elementary
+157|San Miguel South|Katipunan ES|113301|Jane Tuplano|Elementary
+158|San Miguel South|Obo IS|113302; 503188|Jason Yutan|Elementary
+159|San Miguel South|Pangilao ES|174007|Jhonney Boy Bernal|Elementary
+160|San Miguel South|Patagan ES|113303|Ma. Cristina Tanael|Elementary
+161|San Miguel South|San Juan ES|113304|Marck John Eustaquio|Elementary
+162|San Miguel South|San Miguel CES|113305|Analyn Carpio|Elementary
+163|San Miguel South|Solong ES|113306|Noel Torreña|Elementary
+164|Viga East|Batohonan ES|113307|Romela Vista|Elementary
+165|Viga East|Begonia ES|113308|Genaro Robles|Elementary
+166|Viga East|Botinagan ES|113309|Arnulfo Tawat Jr.|Elementary
+167|Viga East|Buenavista ES|113310|Mary Ann Belardo|Elementary
+168|Viga East|Magsaysay ES|113311|Sheryl Lita|Elementary
+169|Viga East|Quirino ES|113312|Mylene Lopez|Elementary
+170|Viga East|Soboc ES|113313|Cecile Leon|Elementary
+171|Viga East|Tambongon CES|113314|Clarissa Magdaraog|Elementary
+172|Viga East|Tinago ES|113315|Ricky Tid|Elementary
+173|Viga East|Villa Aurora ES|113316|Mary Ann Tanon|Elementary
+174|Viga West|Almojuela ES|113317-|Ma. Karen Papango|Elementary
+175|Viga West|Ananong ES|113318|Manilyn Torio|Elementary
+176|Viga West|Burgos ES|113319|Kennon Jay Ogena|Elementary
+177|Viga West|Del Pilar ES|113320|Aiza Tesoro|Elementary
+178|Viga West|Mabini ES|113321|Sarrah Tulod|Elementary
+179|Viga West|Ogbong IS|113322; 503183|Danilo Valderama|Elementary
+180|Viga West|Osmeña ES|113323|Mary Jane Tuno|Elementary
+181|Viga West|P. Vera ES|113324|Kennon Jay Ogena|Elementary
+182|Viga West|Quezon ES|113325|Marites Sanchez|Elementary
+183|Viga West|Rizal ES|113326|Ma. Liza Arrojo|Elementary
+184|Viga West|Roxas ES|113327|Emil Masagca|Elementary
+185|Viga West|Sagrada ES|113328|Aileen Vera|Elementary
+186|Viga West|San Jose ES|113329|Jose Aguinillo|Elementary
+187|Viga West|San Roque ES|113330|Randy Odi|Elementary
+188|Viga West|San Vicente ES|174011|Francis Tomes|Elementary
+189|Viga West|Sta. Rosa ES|113331|Beatriz Arisapa|Elementary
+190|Viga West|Summit ES|113332|Perfecto Usero|Elementary
+191|Viga West|Viga CES|113333|Cynthia Usero|Elementary
+192|Virac North|Bigaa ES|113334|Shiela Marie Sapanta|Elementary
+193|Virac North|Buyo IS|500031|Efren Matienzo Jr.|Elementary
+194|Virac North|Calabnigan ES|113336|Jay Tabuzo|Elementary
+195|Virac North|Calatagan ES|113337|Mary Jane Valenzuela|Elementary
+196|Virac North|Capilihan ES|174012|Lorenzo Gando|Elementary
+197|Virac North|Danicop ES|113338|Perlita Tatel|Elementary
+198|Virac North|Dugui San Isidro|113339|Annabel Tendenilla|Elementary
+199|Virac North|Dugui Too ES|113340|Demetrio Jr M. Suarez|Elementary
+200|Virac North|Dugui Wala ES|113341|Joan Tolentino|Elementary
+201|Virac North|Gogon ES|113342|Jocelyn Burce|Elementary
+202|Virac North|Hicming ES|113343|Rosiel Imperial|Elementary
+203|Virac North|JMA Poniton ES|113344|Walter Mariñas|Elementary
+204|Virac North|Juan M. Alberto Memorial ES|113345|Myla Cordial|Elementary
+205|Virac North|San Vicente ES|113346|Yolanda Tayam|Elementary
+206|Virac North|Simamla ES|113347|Neil Bañares|Elementary
+207|Virac North|Sogod Simamla|113348|Wilsom Tresmaño|Elementary
+208|Virac North|Sto. Domingo ES|113349|Jose Bonifacio|Elementary
+209|Virac North|Sto. Nino ES|113350|Nestor Quintal|Elementary
+210|Virac North|Taytay ES|113351|Allan Sorreda|Elementary
+211|Virac North|Virac Pilot ES|113352|Salve Templo|Elementary
+212|Virac South|Antipolo ES|113353|Asuncion Tabo|Elementary
+213|Virac South|Balite ES|113354|Raquel Alfon|Elementary
+214|Virac South|Batag ES|113355|Arvie Shayne Gianan|Elementary
+215|Virac South|Buenavista ES|113356|Cynthia Camano|Elementary
+216|Virac South|Calampong ES|113357|Joan Correo|Elementary
+217|Virac South|Casoocan ES|113358|Janette Bueno|Elementary
+218|Virac South|Cavinitan ES|113359|Felix Sorra, Jr.|Elementary
+219|Virac South|F. Tacorda Village ES|174013|Ricky Delos Santos|Elementary
+220|Virac South|Hawan ES|113360|Reynante Tabuzo|Elementary
+221|Virac South|Hawan Ilaya ES|113361|Daisy Cambonga|Elementary
+222|Virac South|Igang ES|113362|Mary Liza Ibayan|Elementary
+223|Virac South|Magnesia ES|113363|Ferdinand Tusi|Elementary
+224|Virac South|Marilima ES|113364|Analiza Sabeniano|Elementary
+225|Virac South|Pajo Baguio ES|113365|Arlene Alberto|Elementary
+226|Virac South|Pajo San Isidro ES|113366|Jessie Icaranom|Elementary
+227|Virac South|Palnab ES|113367|Rita Soriao|Elementary
+228|Virac South|Palta ES|113368|Eligio Sales|Elementary
+229|Virac South|Palta Saday ES|113369|Romer Teves|Elementary
+230|Virac South|San Isidro Village ES|174006|Ruben Jose Tria|Elementary
+231|Virac South|Sto. Cristo ES|113370|Anchelita Sicio|Elementary
+232|Virac South|Talisoy ES|113371|Demetrio Suarez, Jr.|Elementary
+233|Virac South|Valencia ES|113372|Gerlie Tablada|Elementary
+234|Virac South|Virac Central ES|113373|Jane Tabor|Elementary
+235|Bagamanoc|Bagamanoc RDHS|302072|Jenny Cabrera|Secondary
+236|Bagamanoc|Bugao NHS|302076|Erlinda Villacorta|Secondary
+237|Bagamanoc|San Vicente NHS|302100|Jowe Tanio|Secondary
+238|Bagamanoc|Suchan IS|503187|Julie Vitalicio|Secondary
+239|Baras|Agban NHS|302070|Jorge Tejada|Secondary
+240|Baras|Baras RDHS|302073|Juan Torreja|Secondary
+241|Bato|Bato RDHS|302074|Sonia Prensader|Secondary
+242|Bato|Bote IS|500412|Jenylin Taopo|Secondary
+243|Bato|Cabugao IS|500032|Maybelle Rubio|Secondary
+244|Caramoran|Caramoran RDHS|302081|Cesmenda Borromeo|Secondary
+245|Caramoran|Caramoran School of Fisheries|302082|Allan Benoyo|Secondary
+246|Caramoran|Dariao NHS|302086|Maria Vegim|Secondary
+247|Caramoran|Mabini IS|503186|Edgar Santos|Secondary
+248|Caramoran|Milaviga IS|500415|Jouie Sanchez|Secondary
+249|Caramoran|Obi IS|502808|Marichris Eusebio|Secondary
+250|Caramoran|Palumbanes IS|500414|Roldan Reazon|Secondary
+251|Caramoran|Panique IS|503185|Jil Ann Salazar|Secondary
+252|Caramoran|Supang-Datag NHS|302102||Secondary
+253|Caramoran|Tubli NHS|302106|Nelson Narit|Secondary
+254|Caramoran|Tucao-Maysuram IS|502809|Ma. Magdalena Lopez|Secondary
+255|Gigmoto|Dororian NHS|302087|Jocelyn Rima|Secondary
+256|Gigmmoto|Gigmoto RDHS|302088|Lyra Tusi|Secondary
+257|Gigmoto|Sicmil IS|500033|Denmar Romero|Secondary
+258|Pandan|Baldoc IS|502496|Percy Rima|Secondary
+259|Pandan|Cobo IS|500159|Arlene Obico|Secondary
+260|Pandan|Leandro I. Verceles NHS Sr.|302103|Roger Camacho|Secondary
+261|Pandan|Pandan SAT|302094|Maria Soledad Conche|Secondary
+262|Pandan|San Isidro IS|502937|Jennierose Rodriguez|Secondary
+263|Panganiban|Alinawan IS|503184|Arnel Fernandez|Secondary
+264|Panganiban|Panganiban NHS|302095|Cheryl Vistal|Secondary
+265|Panganiban|Panganiban NHS, CAIC Compound|309801|Ava Doreen Mahilum|Secondary
+266|San Andres|Cabcab NHS|302078|Ma. Jesyca Barro|Secondary
+267|San Andres|Codon NHS|302085|Bernardo Bosque Jr.|Secondary
+268|San Andres|Lictin IS|500160|Dennis Gianan|Secondary
+269|San Andres|Manambrag NHS|302091|Jesus Gianan|Secondary
+270|San Andres|Mayngaway NHS|302092|Alex Habana|Secondary
+271|San Andres|San Andres Vocational School|302096|Ronald Refre|Secondary
+272|San Miguel|Pagsangahan IS|502056|Milani Del Barrio|Secondary
+273|San Miguel|San Miguel RDHS|302098|Fidel Vegim|Secondary
+274|San Miguel|Mabato HS|302099|Shirely Villaranda|Secondary
+275|San Miguel|Obo IS|503188|Jason Yutan|Secondary
+276|Viga|Ogbong IS|503183|Danilo Valderama|Secondary
+277|Viga|San Jose NHS|302097|Clemente Olarte|Secondary
+278|Viga|Tambongon NHS|302104|Charlie Teves|Secondary
+279|Viga|Tinago NHS|302105|Jinckymay Fernandez|Secondary
+280|Viga|Viga RDHS|302107|Janet Tonio|Secondary
+281|Virac|Antipolo NHS|302071|Aileen Tabilog|Secondary
+282|Virac|Buyo IS|500031|Efren Matienzo, Jr.|Secondary
+283|Virac|Calatagan HS|302084|Edgar Sarmiento|Secondary
+284|Virac|Catanduanes NHS|302083|Amelia Eusebio|Secondary
+285|Virac|Dugui San Isidro IS|502936|Annabel Tendenilla|Secondary
+286|Virac|Hawan NHS|302089|David Sarmiento|Secondary
+287|Virac|Magnesia NHS|302090|Alia Nasser|Secondary
+288|Virac|Palta NHS|302093|Jupiter Torno|Secondary`;
+
+const columns = raw.trim().split("\n")[0].split("|");
+const records = raw.trim().split("\n").slice(1)
+  .map(line => line.split("|"));
+
+let sortColumn = -1;
+let sortAscending = true;
+
+const head = document.getElementById("head");
+const filterRow = document.getElementById("filters");
+const body = document.getElementById("body");
+const search = document.getElementById("search");
+
+columns.forEach((name, index) => {
+  const th = document.createElement("th");
+  const button = document.createElement("button");
+  button.textContent = name + " ↕";
+  button.addEventListener("click", () => {
+    sortAscending = sortColumn === index ? !sortAscending : true;
+    sortColumn = index;
+    render();
+  });
+  th.appendChild(button);
+  head.appendChild(th);
+
+  const filterTh = document.createElement("th");
+  const input = document.createElement("input");
+  input.placeholder = "Filter…";
+  input.setAttribute("aria-label", `Filter ${name}`);
+  input.addEventListener("input", render);
+  filterTh.appendChild(input);
+  filterRow.appendChild(filterTh);
+});
+
+function render() {
+  const filters = [...filterRow.querySelectorAll("input")]
+    .map(input => input.value.trim().toLowerCase());
+  const query = search.value.trim().toLowerCase();
+
+  let visible = records.filter(row =>
+    row.every((value, i) => value.toLowerCase().includes(filters[i])) &&
+    (!query || row.some(value => value.toLowerCase().includes(query)))
+  );
+
+  if (sortColumn >= 0) {
+    visible.sort((a, b) => {
+      const comparison = a[sortColumn].localeCompare(b[sortColumn], undefined, {
+        numeric: true, sensitivity: "base"
+      });
+      return sortAscending ? comparison : -comparison;
+    });
+  }
+
+  body.replaceChildren();
+  for (const row of visible) {
+    const tr = document.createElement("tr");
+    for (const value of row) {
+      const td = document.createElement("td");
+      td.textContent = value;
+      tr.appendChild(td);
+    }
+    body.appendChild(tr);
+  }
+
+  document.getElementById("status").textContent =
+    `Showing ${visible.length} of ${records.length} schools`;
+}
+
+search.addEventListener("input", render);
+document.getElementById("clear").addEventListener("click", () => {
+  search.value = "";
+  filterRow.querySelectorAll("input").forEach(input => input.value = "");
+  render();
+});
+render();
+</script>
+</body>
+</html>

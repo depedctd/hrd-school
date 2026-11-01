@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Professional Development Activities</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 30px; color: #243746;
+    background: #f3f6f9; font: 14px/1.5 Arial, sans-serif;
+  }
+  main {
+    max-width: 1500px; margin: auto; padding: 24px;
+    background: white; border-radius: 14px;
+    box-shadow: 0 8px 28px #16324f18;
+  }
+  h1 { margin: 0 0 6px; color: #16324f; }
+  .subtitle { margin: 0 0 20px; color: #607586; }
+  #search {
+    width: min(380px, 100%); margin: 0 0 14px; padding: 10px 12px;
+    border: 1px solid #ccd8e1; border-radius: 8px; font-size: 14px;
+  }
+  #count { margin-left: 10px; color: #607586; }
+  .table-wrap { overflow: auto; max-height: 75vh; border: 1px solid #dce5eb; border-radius: 9px; }
+  table { width: 100%; min-width: 1400px; border-collapse: collapse; }
+  th, td {
+    padding: 11px 12px; border-bottom: 1px solid #e1e8ee;
+    text-align: left; vertical-align: top;
+  }
+  thead tr:first-child th {
+    position: sticky; top: 0; z-index: 2; color: white; background: #16324f;
+  }
+  thead tr.filters th {
+    position: sticky; top: 42px; z-index: 2; padding: 7px; background: #eaf1f5;
+  }
+  .filter {
+    width: 100%; min-width: 75px; padding: 7px;
+    border: 1px solid #ccd8e1; border-radius: 6px; background: white;
+  }
+  tbody tr:nth-child(even) { background: #f6f9fb; }
+  tbody tr:hover { background: #e9f3f8; }
+  td:first-child { font-weight: bold; }
+  .badge {
+    display: inline-block; padding: 4px 9px; border-radius: 20px;
+    font-size: 12px; font-weight: bold; white-space: nowrap;
+  }
+  .accredited { color: #17613c; background: #e2f5e9; }
+  .pending { color: #805600; background: #fff0c2; }
+  @media (max-width: 600px) { body { padding: 12px; } main { padding: 14px; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>Continuing Professional Development (CPD) Programs of SDO Catanduanes</h1>
+  <p class="subtitle">Search the full register or filter individual columns.</p>
+  <input id="search" type="search" placeholder="Search all activities…">
+  <span id="count"></span>
+  <div class="table-wrap">
+    <table>
+      <thead id="thead"></thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+</main>
+
+<script>
+const headers = [
+  "No.", "Title of Activity", "Accreditation No.", "Date of Conduct",
+  "Venue", "No. of CPD Units", "Proponent", "Office", "Status"
+];
+
+// Fields are separated with |. Empty fields are retained.
+const data = `39|Capacitating Araling Panlipunan Teachers through Enhancing Skills in Effective Pedagogical Approaches, 21st Century Skills and ICT integration, and Designing lesson plan based on Curriculum Map and the IDF Principles||October 30, November 29, December 11, 2026, January 29, February 26, 2026|San Miguel Rural Development High School, San Miguel, Catanduanes||Imelda T. Mendoza|San Miguel RDHS|Pending
+38|Capacity Building for Science Teachers in Developing Contextualized and Localized Intervention Materials||October 30 November 27, December 11, 2026, January 29, and February 26, 2027|San Miguel Rural Development High School, San Miguel, Catanduanes||Beth B. Valeza|San Miguel RDHS|Pending
+37|Bridging Cognitive, Digital, and Well-Being Support: A 5 Month Lac Series on Executive Functioning, AI Tools, and PFA||November 19 & 26, December 3 & 10, 2026, January 14 & 21, February 4 & 11, March 4 & 11, 2027|Sagrada ES, Sagrada, Bagamanoc, Catanduanes||Mia V. Fernandez|Sagrada ES, Bagamanoc North|Pending
+36|Strengthening Numeracy Instruction: A Learning Action Cell for Teachers||October 30, November 27, December 18, 2026, January 29, February 26, 2027|Dayawa ES, Dayawa, San Miguel, Catanduanes||Christophere S. Tapas|Dayawa ES, San Miguel South|Pending
+35|Transforming Teaching Practices: Integrating Research, ICT and Learner-Centered Approaches|PTR-2024-692-15649|November 20, 27. December 4, 11, 2026, January 15, 22, February 12, 19, March 5, 12, 2027|Cahan Barrio School Cahan, Bagamanoc, Catanduanes|19|Jenle T. Evangelista|Cahan Barrio School|Accredited
+34|Strengthening Teaching Competence Through Content Knowledge Application, Research-Based Practices and ICT Integration|PTR-2024-692-15637|November 13, December 11, 2026, January 29, February 5, March 5, 2027|Dominador C. Guerrero ES, Barangay San Vicente, Gigmoto, Catanduanes|3|ErmeT. Obogne|Dominador C. Guerrero ES, Gigmoto|Accredited
+33|Enhancing Teacher Competence through Project TEACH (Transforming Educators through Active Collaboration and Holistic Professional Growth)|PTR-2024-692-15471|October 30, November 13, December 4, 2026, January 8, 2027, February 5, 2027|Paniquihan ES, Paniquihan, Baras, Catanduanes|7|Lalaine V. Gonzales|Paniquihan ES, Baras South|Accredited
+32|Enhancing Teaching Excellence through Content Mastery, Responsive Practices, and Collaborative Professional Growth|PTR-2024-692-15392|November 6, 13, 20, 27, December 4, 11, 18, 2026, January 7, 8, 15, 22, 29, February 5, 12, 19, 26, March 5, 12, 19, 26, 2027|CAVDEAL Building, Bagamanoc Central ES, Bagamanoc|15|Mariel V. Evangelista|Bagamanoc Central ES, Bagamanoc South|Accredited
+31|TATaG: Teachers Applying Theories and Growth for MATATAG Classrooms Enhancing Content Mastery, Pedagogy, and School Operations Across Key Stages 1 and 2|PTR-2024-692-15719|December 17, 18, 2026, April 2, 5, 2027|Iyao ES, Iyao, Caramoran, Catanduanes|15|Charmaine Kaye A. Magdahong|Iyao ES, Caramoran South|Accredited
+30|Enhancing Teachers’ Capacity in Improving Learners’ Discipline through Positive Reinforcement|PTR-2024-692-15322|November 06, November 27, December 18, 2026, January 29, February 26, 2027|Patagan Elementary School, Patagan Salvacion, San Miguel, Catanduanes|4|Ma. Cristina T. Tanael|Patagan ES, San Miguel South|Accredited
+29|Bridging Learning Gaps Through Learning Action Cell on Reading, Numeracy, Healthy Learning Institution, Inclusive Teaching, ICT Integration, and Psychosocial Practices|PTR-2024-692-15722|November 13, December 11, 2026 January 22, February 19, March 5, 2027|Osmeña ES, Osmeña, Viga, Catanduanes|5|Mary Jane F. Tuno|Osmeña ES, Viga West|Accredited
+28|PROJECT SCALE (Strengthening Competencies, Assessment, Learner – Centered Strategies, and Ethics for Senior High School Teachers)|PTR-2024-692-15207|October 28, November 6, December 4, 2026 January 8, February 5, 2027|Baras Rural Development High School, Osmena, Baras, Catanduanes|5|Pamila T. Tenerife|Baras RDHS|Accredited
+27|PROJECT IMPACT: Integrative Methods for Pedagogical Advancement and Collaborative Teaching|PTR-2024-692-15327|November 6, 20, December 4, 2026, January 8, 2027, February 5, 2027|Baras Rural Development High School Osmeña, Baras, Catanduanes|5|Melanie Joy T. Segismundo|Baras RDHS|Accredited
+26|Capacitating Mathematics Teachers through Enhancing Pedagogical Teaching Strategies and Classroom Assessment|PTR-2024-692-15210|October 30, November 29, December 11, 2026, January 29, February 26, 2027|San Miguel Rural Development High School, Dist.1, San Miguel, Catanduanes|5|Jenny T. Tresvalles|San Miguel RDHS|Accredited
+25|From Math Distress to Math Success: Building Strong Mathematical Foundations in Early Graders|PTR-2024-692-15188|October 30, November 27, December 4, 2026, January 29, February 26, 2027|Codon Elementary School Faculty Room, Codon, San Andres, Catanduanes|4|Robert V. Tablate|Codon ES|Accredited
+24|Project E-SaMath: Enhancing Science and Math Teaching Skills for Inclusive Education|PTR-2024-692-15106|October 27, November 6, December 4, 2026, January 8, February 5, 2027|Baras Rural Development High School, Baras, Catanduanes|6|Zoren I. Añonuevo|Baras RDHS|Accredited
+23|Pagsasanay at Pagtuturo sa Filipino at Pagbasa Batay sa Phil-IRI: Paglalapat ng Kahulugan, Komprehensiyon, Metakognitibong Pagbasa, at mga Estratehiya sa ARAL Program|PTR-2024-692-15094|October 30, November 27, December 11, 2026 January 29, February 26, 2027|San Miguel Rural Development High School, San Miguel|5|Cherry Ann M. Taperla|San Miguel RDHS|Accredited
+22|ILAW: Improving Learning Approaches and Workflows for Teachers through Lesson Planning, Teaching Strategies, Assessment, and Action Research|PTR-2024-692-15489|October 22, 29, November 5, 12, 19, 26, December 3, 10, 2026, January 14, 21, 2027|Bagamanoc Rural Development High School Multi-Purpose Hall, Sta. Teresa, Bagamanoc|10|Erwin G. De Jesus|Bagamanoc RDHS|Accredited
+21|Digital & Media Platforms in 21st Century Teaching & Learning : A How-To|PTR-2024-692-14870|October 16, 30, November 6, 27, December 11, 2026|Cabcab Central Elementary School-ICT Room, Cabcab, San Andres|7|Tricia Nicole B. Manlagñit|Cabcab Central ES, San Andres West|Accredited
+20|Broadening Research-based Instruction for Diverse Groups of Educators|PTR-2024-692-15130|October 30, November 27, December 11, 2026, January 29, February 26, 2027|Salvacion ES, Salvacion, Baras|7.5|Mary Joy T. Tapado|Salvacion ES, Baras South|Accredited
+19|Empowering Teachers Through Action Research, Literacy and Numeracy Enhancement, Technology-Driven Pedagogy, and Strengthened School-Based Management Practices|PTR-2024-692-14792|October 2, November 20, December 11, 2026, January 29, February 26, 2027|San Andres ES, San Andres, Pandan|7|Aizel A. Cerillo|San Andres ES, Pandan West|Accredited
+18|From Policy to Practice: Unlocking the Power of Research-Based Pedagogy Batch 2|PTR-2024-692-15173|October 17-18, 2026|Queen Maricel Inn, San Isidro Village, Virac|7|Carol P. Gil|SGOD-HRD|Accredited
+17|From Policy to Practice: Unlocking the Power of Research-Based Pedagogy Batch 1|PTR-2024-692-15175|October 10-11, 2026|Queen Maricel Inn, San Isidro Village, Virac|7|Carol P. Gil|SGOD-HRD|Accredited
+16|Revised Grade 6, 9,10 Curriculum Training Program for Grade 10 Mathematics Wave 2|PTR-2024-692-15122|September 26, 27, October 3,4, 2026|Sea Breeze Restaurant, Salvacion, Virac, Catanduanes|13|Jezrahel T. Omadto|CID|Accredited
+15|Revised Grade 6, 9,10 Curriculum Training Program for Grade 9 Mathematics Wave 2|PTR-2024-692-15014|September 26, 27, October 3,4, 2026|Sea Breeze Restaurant, Salvacion, Virac, Catanduanes|12|Jezrahel T. Omadto|CID|Accredited
+14|Revised Grade 6, 9,10 Curriculum Training Program for Grade 6 Mathematics Wave 2|PTR-2024-692-15008|September 26, 27, October 3,4, 2026|Sea Breeze Restaurant, Salvacion, Virac, Catanduanes|10|Jezrahel T. Omadto|CID|Accredited
+13|Project START: Strengthening Teacher-led Action Research Toward Results|PTR-2024-692-14745|September 18,25, October 16,30, November 13,27, December 11, 2026, January 15,22, 2027, February 5,19,26, 2027|Cabcab NHS, Cabcab, San Andres, Catanduanes|12|Jessa F. Purcil|Cabcab NHS|Accredited
+12|School-Based Learning Action Cell: Strengthening Instructional Practices Through Inclusive, Contextualized and learner Centered Teaching Strategies|PTR-2024-692-14504|September 25, October 23, November 27, 2026 January 29, February 26, 2027|Puraran ES, Puraran, Baras|7|Lilybeth T. Gualberto|Puraran ES, Baras North|Accredited
+11|Strengthening Foundational Literacy and Numeracy Skills for Improved Learning Outcomes|PTR-2024-692-14404|September 25, October 30, November 27, December 18, 2026, January 29, 2027|San Miguel Central ES, San Miguel|5|Myla B. Cordial|San Miguel Central ES, San Miguel South|Accredited
+10|Collective And Integrative Approach On School-Based Management (SBM), School Governance Council (SGC), Healthy Learning Institutions (HLI) And Action Research For Empowered Learning & Teaching Practices|PTR-2024-692-14090|August 28, September 25, October 23, 2026, November 27, 2026|Agban Central ES, Agban, Baras, Catanduanes|4|Juan O. Geromo|Agban Central ES, Baras North|Accredited
+9|Empower, Engage, Excel: Teachers Leading the ARAL Reading Journey|PTR-2024-692-14180|August 28, September 25, October 30, 2026|Tibang ES, Tibang, San Andres, Catanduanes|5|Mitsheline O. Surban, Master Teacher I|Tibang ES, San Andres West|Accredited
+8|Revised Grades 6, 9, and 10 Curriculum Training Program for Grades 10 Mathematics Wave 1|PTR-2024-692-13209|June 11, 12, 18, 19, 2026|Sea Breeze Restaurant, Salvacion, Virac, Catanduanes|13|Jezrahel T. Omadto|CID|Accredited
+7|Revised Grades 6, 9, and 10 Curriculum Training Program for Grades 9 Mathematics Wave 1|PTR-2024-692-13208|June 11, 12, 18, 19, 2026|Amenia Beach Resort, Palawig, San Andres|13|Jezrahel T. Omadto|CID|Accredited
+6|Revised Grades 6, 9, and 10 Curriculum Training Program for Grades 6 Mathematics Wave 1|PTR-2024-692-13207|June 5, 6, 7, 12, 2026|Sea Breeze Restaurant, Salvacion, Virac|13|Jezrahel T. Omadto|CID|Accredited
+5|From Policy to Practice: Unlocking the Power of Research-Based Pedagogy 2.0|PTR-2024-692-13528|December 17-18, 2026|Catanduanes NHS|12|Roselyn Borbe|Catanduanes NHS|Accredited
+4|English for Mathematics: Enhancing English Language and Skills for Math Learners|PTR-2024-692-13184|August 21, 22, 23, 2026|Rhaj Executive Inn, Gogon, Virac, Catanduanes|11|Jezrahel T. Omadto|CID|Accredited
+3|Capacity Building for Career Guidance Advocates on the Implementation of Career Guidance Program|PTR-2024-692-9486|September 02-06, 2025|Tibang ES, Tibang, San Andres, Catanduanes|15|Ma. Lourdes Sorra; Alfredo Bagadiong, Jr|SGOD-YFD|Accredited
+2|Empowering Beginning Teachers through Learning and Development : Induction Program for Beginning Teachers (IPBT)|PTR-2024-692-8060|March 21, 28, April 4, 2025|Virac Central ES Training Hall, Virac|12|Eligio Sales|Igang ES, Virac South|Accredited
+1|Division DCP Adoption Training-Workshop for Selected District & School ICT Coordinators of DCP FY 2022 & 2023 Recipient Schools|PTR-2024-692-7486|January 29-31, 2025|Amenia Beach Resort, Palawig, San Andres|12|Jennifer Metica|OSDS-ICT Unit|Accredited`;
+
+const rows = data.split("\n").map(line => line.split("|"));
+const thead = document.querySelector("#thead");
+const tbody = document.querySelector("#tbody");
+const search = document.querySelector("#search");
+const count = document.querySelector("#count");
+
+const headingRow = document.createElement("tr");
+headers.forEach(text => {
+  const th = document.createElement("th");
+  th.textContent = text;
+  headingRow.appendChild(th);
+});
+thead.appendChild(headingRow);
+
+const filterRow = document.createElement("tr");
+filterRow.className = "filters";
+
+headers.forEach((header, column) => {
+  const th = document.createElement("th");
+  const select = document.createElement("select");
+  select.className = "filter";
+  select.setAttribute("aria-label", `Filter by ${header}`);
+
+  const allOption = document.createElement("option");
+  allOption.value = "";
+  allOption.textContent = "All";
+  select.appendChild(allOption);
+
+  const values = [...new Set(rows.map(row => row[column] || ""))]
+    .sort((a, b) => a.localeCompare(b));
+
+  values.forEach(value => {
+    const option = document.createElement("option");
+    option.value = value === "" ? "__blank__" : value;
+    option.textContent = value === "" ? "(Blank)" : value;
+    select.appendChild(option);
+  });
+
+  select.addEventListener("change", filterTable);
+  th.appendChild(select);
+  filterRow.appendChild(th);
+});
+thead.appendChild(filterRow);
+
+rows.forEach(row => {
+  const tr = document.createElement("tr");
+  row.forEach((value, column) => {
+    const td = document.createElement("td");
+    if (column === 8) {
+      const badge = document.createElement("span");
+      badge.className = "badge " + (value === "Pending" ? "pending" : "accredited");
+      badge.textContent = value;
+      td.appendChild(badge);
+    } else {
+      td.textContent = value;
+    }
+    tr.appendChild(td);
+  });
+  tbody.appendChild(tr);
+});
+
+function filterTable() {
+  const query = search.value.toLocaleLowerCase();
+  const filters = [...document.querySelectorAll(".filter")];
+  let visible = 0;
+
+  [...tbody.rows].forEach((tr, rowIndex) => {
+    const row = rows[rowIndex];
+    const matchesSearch = row.join(" ").toLocaleLowerCase().includes(query);
+    const matchesFilters = filters.every((select, column) => {
+      if (!select.value) return true;
+      if (select.value === "__blank__") return row[column] === "";
+      return row[column] === select.value;
+    });
+
+    tr.hidden = !(matchesSearch && matchesFilters);
+    if (!tr.hidden) visible++;
+  });
+
+  count.textContent = `Showing ${visible} of ${rows.length} activities`;
+}
+
+search.addEventListener("input", filterTable);
+filterTable();
+</script>
+</body>
+</html>

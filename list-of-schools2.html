@@ -17,6 +17,38 @@
   th input{box-sizing:border-box;width:100%;padding:6px}
   tbody tr:nth-child(even){background:#f8f9fa}
   #status{margin:8px 0;color:#555}
+  .school-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(150px, 1fr));
+  gap: 12px;
+  margin: 0 0 20px;
+}
+
+.school-summary > div {
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #f7f9fc;
+  text-align: center;
+}
+
+.school-summary strong,
+.school-summary span {
+  display: block;
+}
+
+.school-summary span {
+  margin-top: 6px;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+@media (max-width: 700px) {
+  .school-summary {
+    grid-template-columns: repeat(2, minmax(130px, 1fr));
+  }
+}
+
 </style>
 </head>
 <body>

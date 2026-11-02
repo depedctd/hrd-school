@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CPD Program Requirements</title>
+
+    <link rel="icon" type="image/ico" href="./images/favicon/HRD icon.ico">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@1,900&family=Platypi:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 36px 18px;
+      background: #f4f7fb;
+      color: #243247;
+      font-family: Poppins, Arial, Helvetica, sans-serif;
+    }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+    }
+
+    .page-header h1 {
+      margin: 0 0 8px;
+      color: #163b65;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+    }
+
+    .page-header p {
+      margin: 0;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      padding: 6px;
+      width: fit-content;
+      max-width: 100%;
+      background: #e8eef6;
+      border-radius: 12px;
+    }
+
+    .tab-button {
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 22px;
+      background: transparent;
+      color: #42546b;
+      font-size: 0.98rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+
+    .tab-button:hover {
+      color: #163b65;
+    }
+
+    .tab-button.active {
+      background: #fff;
+      color: #163b65;
+      box-shadow: 0 2px 8px rgb(22 59 101 / 12%);
+    }
+
+    .content-card {
+      overflow: hidden;
+      border: 1px solid #e1e8f0;
+      border-radius: 14px;
+      background: #fff;
+      box-shadow: 0 8px 24px rgb(29 50 74 / 6%);
+    }
+
+    .section-heading {
+      padding: 22px 24px;
+      border-bottom: 1px solid #e8edf3;
+    }
+
+    .section-heading h2 {
+      margin: 0 0 6px;
+      color: #163b65;
+      font-size: 1.25rem;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    thead {
+      background: #f7f9fc;
+    }
+
+    th,
+    td {
+      padding: 16px 18px;
+      border-bottom: 1px solid #e8edf3;
+      vertical-align: top;
+      line-height: 1.55;
+    }
+
+    th {
+      color: #465a72;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    td {
+      color: #334155;
+      font-size: 0.94rem;
+    }
+
+    tbody tr:last-child td {
+      border-bottom: 0;
+    }
+
+    tbody tr:hover {
+      background: #fafcff;
+    }
+
+    .number {
+      width: 64px;
+      color: #64748b;
+      text-align: center;
+      font-weight: 700;
+    }
+
+    .requirement {
+      min-width: 220px;
+      color: #243b53;
+      font-weight: 700;
+    }
+
+    .remarks {
+      min-width: 280px;
+      color: #5b6b7f;
+    }
+
+    .action-link {
+      display: inline-block;
+      padding: 7px 12px;
+      border: 1px solid #c8d9ef;
+      border-radius: 7px;
+      background: #f1f6fd;
+      color: #1d5b9b;
+      font-size: 0.88rem;
+      font-weight: 700;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .action-link:hover {
+      border-color: #8fb4df;
+      background: #e5f0fc;
+    }
+
+    .process-placeholder {
+      padding: 32px 24px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .process-placeholder h3 {
+      margin: 0 0 8px;
+      color: #243b53;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 24px 12px;
+      }
+
+      .tabs {
+        display: flex;
+        width: 100%;
+      }
+
+      .tab-button {
+        flex: 1;
+        padding: 11px 12px;
+      }
+
+      th,
+      td {
+        padding: 13px 14px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <header class="page-header">
+      <h1>CPD Program Application</h1>
+      <p>Review the required documents and supporting information for your application.</p>
+    </header>
+
+    <nav class="tabs" aria-label="Application sections">
+      <button class="tab-button active" type="button" aria-selected="true"
+              aria-controls="requirements-panel" data-panel="requirements-panel">
+        Requirements
+      </button>
+      <button class="tab-button" type="button" aria-selected="false"
+              aria-controls="process-panel" data-panel="process-panel">
+        Process
+      </button>
+    </nav>
+
+    <section class="content-card" id="requirements-panel">
+      <div class="section-heading">
+        <h2>Document Requirements</h2>
+        <p>Prepare the following documents for your CPD program application.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="number">No.</th>
+              <th>Requirement</th>
+              <th>Link</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="number">1</td>
+              <td class="requirement">Infographic of the activity</td>
+              <td><a class="action-link" href="https://depedph-my.sharepoint.com/:i:/g/personal/elizabeth_urbano_deped_gov_ph/Ebqzj12FXgRGuI4A1aQmSyoBlB8J9lRTCeR3DAj9Hu5fIQ?e=4phZX9" target="_blank">View</a></td>
+              <td class="remarks">This is a sample. Containing the title, date, and venue.</td>
+            </tr>
+            <tr>
+              <td class="number">2</td>
+              <td class="requirement">Application for Accreditation of CPD Program</td>
+              <td><a class="action-link" href="https://depedph-my.sharepoint.com/:w:/g/personal/elizabeth_urbano_deped_gov_ph/EUyMrUsMGvBAl5yxbO7YcawBvYarkl2jmpJvZ3-c_oGvrA?e=yEXmUB" target="_blank">View</a></td>
+              <td class="remarks">This is a prescribed template, please download.</td>
+            </tr>
+            <tr>
+              <td class="number">3</td>
+              <td class="requirement">Instructional Design for Professional Teachers</td>
+              <td><a class="action-link" href="https://depedph-my.sharepoint.com/:w:/g/personal/elizabeth_urbano_deped_gov_ph/ETIeakqE1dVHrZJBfyJfiu8BxQy2p6OrZs9q7ooe4pruog?e=SsuQIE" target="_blank">View</a></td>
+              <td class="remarks">This is a prescribed template, please download.</td>
+            </tr>
+            <tr>
+              <td class="number">4</td>
+              <td class="requirement">Evaluation methods and tools</td>
+              <td><a class="action-link" href="https://depedph-my.sharepoint.com/:b:/g/personal/elizabeth_urbano_deped_gov_ph/ES7mneT6ptNEtVvalxOAmdsBT-4ObMoLqhuQ53KFmGnQDA?e=juMBil" target="_blank">View</a></td>
+              <td class="remarks">
+                This is a sample. Measures the learning gained by the participants; specific and
+                appropriate to the learning outcomes set. Can be a Pre/Post Test.
+              </td>
+            </tr>
+            <tr>
+              <td class="number">5</td>
+              <td class="requirement">Program of Activities</td>
+              <td><a class="action-link" href="https://depedph-my.sharepoint.com/:x:/g/personal/elizabeth_urbano_deped_gov_ph/IQD2AQ6CwfaIQpC_DvB1zn0kAaj2eUZBMMWA-FirEu5Zgb0?e=KoO7aH" target="_blank">View</a></td>
+              <td class="remarks">This is a sample. Shows the time duration per topic and the resource person.</td>
+            </tr>
+            <tr>
+              <td class="number">6</td>
+              <td class="requirement">Financial Plan</td>
+              <td><a class="action-link" href="https://depedph-my.sharepoint.com/:x:/g/personal/elizabeth_urbano_deped_gov_ph/EZanw_t6sqJHnknb0b5QcCcBjUrXidSrlZBmd3NjLCiPOw?e=VAjdXX" target="_blank">View</a></td>
+              <td class="remarks">This is a prescribed template, please download.</td>
+            </tr>
+            <tr>
+              <td class="number">7</td>
+              <td class="requirement">
+                Resume of the Resource Speakers with valid Professional ID card
+              </td>
+              <td><a class="action-link" href="https://depedph-my.sharepoint.com/:w:/g/personal/elizabeth_urbano_deped_gov_ph/EQriy-hXlQxGh_WH2xHchJEBRGXpjoVoChDrJ-vLFLACzQ?e=XXDpz2" target="_blank">View</a></td>
+              <td class="remarks">
+                This is a prescribed template, please download.
+              </td>
+            </tr>
+            <tr>
+              <td class="number">8</td>
+              <td class="requirement">NEAP or Division Quality Assurance Certificate</td>
+              <td><a class="action-link" href="https://depedph-my.sharepoint.com/:b:/g/personal/elizabeth_urbano_deped_gov_ph/IQAhQZ8ZW1weT790xN7J7dXOAd7uE-tz3rLBsqr03ZhsMpI?e=x2kq41" target="_blank">View</a></td>
+              <td class="remarks">This is a sample. NEAP RV or SGOD-HRDS shall provide the certification.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="content-card" id="process-panel" hidden>
+      <div class="section-heading">
+        <h2>Application Process</h2>
+        <p>Follow the steps below to complete your application.</p>
+        <br>
+
+        <img style="width: 90%" src="./images/cpd-process.jpeg" alt="exitcon-infographic">
+        <br>
+        <br>
+        <img style="width: 90%" src="./images/cpd-process-div-initiated.jpeg" alt="exitcon-infographic">
+        
+      </div>
+      <div class="process-placeholder">
+        <h3>Links for Quality Assurance documents</h3>
+        <p>
+          <a class="action-link" href="https://depedctd.github.io/hrd-school/inset-sy-26-27.html" target="_blank">INSET</a>
+          <a class="action-link" href="https://depedctd.github.io/hrd-school/slac-sy-26-27.html" target="_blank">SLAC</a>
+          <a class="action-link" href="https://depedctd.github.io/hrd-school/neap-quality-assurance.html" target="_blank">Division-Inititated</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll(".tab-button");
+    const panels = document.querySelectorAll(".content-card");
+
+    buttons.forEach((button) => {
+      button.addEventListener("click", () => {
+        buttons.forEach((item) => {
+          item.classList.remove("active");
+          item.setAttribute("aria-selected", "false");
+        });
+
+        panels.forEach((panel) => {
+          panel.hidden = true;
+        });
+
+        button.classList.add("active");
+        button.setAttribute("aria-selected", "true");
+        document.getElementById(button.dataset.panel).hidden = false;
+      });
+    });
+  </script>
+</body>
+    <br>
+    <footer style="text-align: center; font-size: 12px" >Copyright @ 2024. All Rights Reserved.</footer>
+</html>
